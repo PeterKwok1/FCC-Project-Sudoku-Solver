@@ -69,39 +69,23 @@ function isValid(board, row, col, num) {
   return true;
 }
 
-// Example Sudoku board
-const sudokuBoard = [
-  [5, 3, 0, 0, 7, 0, 0, 0, 0],
-  [6, 0, 0, 1, 9, 5, 0, 0, 0],
-  [0, 9, 8, 0, 0, 0, 0, 6, 0],
-  [8, 0, 0, 0, 6, 0, 0, 0, 3],
-  [4, 0, 0, 8, 0, 3, 0, 0, 1],
-  [7, 0, 0, 0, 2, 0, 0, 0, 6],
-  [0, 6, 0, 0, 0, 0, 2, 8, 0],
-  [0, 0, 0, 4, 1, 9, 0, 0, 5],
-  [0, 0, 0, 0, 8, 0, 0, 7, 9]
-];
-
-console.log("Sudoku board:");
-console.log(printBoard(sudokuBoard));
-console.log("Solved Sudoku:");
-console.log(printBoard(solveSudoku(sudokuBoard)));
-
-function printBoard(board) {
-  let result = "";
-  for (let i = 0; i < 9; i++) {
-    if (i > 0 && i % 3 === 0) {
-      result += "- - - - - - - - - - -\n";
+function parseSudokuString(sudokuString) {
+  const sudokuBoard = [];
+  let row = [];
+  for (let i = 0; i < sudokuString.length; i++) {
+    const char = sudokuString[i];
+    if (char === '.') {
+      row.push(0); // Represent empty spots with 0
+    } else if (!isNaN(parseInt(char))) {
+      row.push(parseInt(char));
     }
-    for (let j = 0; j < 9; j++) {
-      if (j > 0 && j % 3 === 0) {
-        result += "| ";
-      }
-      result += board[i][j] + " ";
+    // If the row is filled or we reach the end of the string
+    if (row.length === 9 || i === sudokuString.length - 1) {
+      sudokuBoard.push(row);
+      row = [];
     }
-    result += "\n";
   }
-  return result;
+  return sudokuBoard;
 }
 
 // 
@@ -123,7 +107,9 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
-
+    const board = parseSudokuString(puzzleString)
+    const solvedBoard = solveSudoku(board)
+    return solvedBoard.flat().join('')
   }
 }
 
