@@ -22,7 +22,7 @@ module.exports = function (app) {
       if (
         coordinate.length !== 2 ||
         !/[a-i]/i.test(row) ||
-        !/1-9/i.test(column)
+        !/[1-9]/i.test(column)
       ) {
         res.json({ error: 'Invalid coordinate' })
         return
@@ -37,21 +37,22 @@ module.exports = function (app) {
         return
       }
       let validCol = solver.checkColPlacement(puzzle, row, column, value)
-      let validReg = solver.checkRegionPlacement(puzzle, row, column, value)
       let validRow = solver.checkRowPlacement(puzzle, row, column, value)
-      let conflicts = []
+      let validReg = solver.checkRegionPlacement(puzzle, row, column, value)
+      let conflict = []
       if (validCol && validReg && validRow) {
         res.json({ valid: true })
       } else {
         if (!validRow) {
-          conflicts.push('row')
+          conflict.push('row')
         }
         if (!validCol) {
-          conflicts.push('column')
+          conflict.push('column')
         }
         if (!validReg) {
-          conflicts.push('region')
+          conflict.push('region')
         }
+        res.json({ valid: false, conflict })
       }
     });
 
@@ -63,10 +64,10 @@ module.exports = function (app) {
         return
       }
       const solution = solver.solve(puzzle)
-      if (solution.error) { // idt this ever runs
-        res.json(solution)
-        return
+      if (!solution) {
+        res.json({ error: 'Puzzle cannot be solved' })
+      } else {
+        res.json({ solution })
       }
-      return res.json({ solution })
     });
 };

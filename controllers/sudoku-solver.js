@@ -4,7 +4,7 @@ function solveSudoku(board) {
   if (solve(board)) {
     return board;
   } else {
-    return "No solution exists";
+    return false;
   }
 }
 
@@ -111,7 +111,7 @@ class SudokuSolver {
     if (grid[row - 1][column - 1] !== 0) {
       return false
     }
-    for (let col = 0; col < 9; col++) {
+    for (let i = 0; i < 9; i++) {
       if (grid[row - 1][i] == value) {
         return false
       }
@@ -125,8 +125,8 @@ class SudokuSolver {
     if (grid[row - 1][column - 1] !== 0) {
       return false
     }
-    for (let col = 0; col < 9; col++) {
-      if (grid[i][column - 1] == value) {
+    for (let i = 0; i < 9; i++) {
+      if (grid[column - 1][i] == value) {
         return false
       }
     }
@@ -134,12 +134,21 @@ class SudokuSolver {
   }
 
   checkRegionPlacement(puzzleString, row, column, value) {
-
+    let grid = parseSudokuString(puzzleString)
+    row = this.letterToNumber(row)
+    let startRow = row - (row % 3),
+      startCol = column - (column % 3)
+    for (let i = 0; i < 3; i++)
+      for (let j = 0; j < 3; j++)
+        if (grid[i + startRow][j + startCol] == value)
+          return false
+    return true
   }
 
   solve(puzzleString) {
     const board = parseSudokuString(puzzleString)
     const solvedBoard = solveSudoku(board)
+    if (!solvedBoard) return false
     return solvedBoard.flat().join('')
   }
 
