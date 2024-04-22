@@ -31,11 +31,11 @@ module.exports = function (app) {
         res.json({ error: 'Invalid value' })
         return
       }
-      let index = (solver.letterToNumber(row) - 1 * 9 + (+column - 1))
+      let index = (solver.letterToNumber(row) - 1) * 9 + (+column - 1)
       if (puzzle[index] == value) {
         res.json({ valid: true })
         return
-      }
+      } // this seems pointless sincey you're going to check anyway. // turns out this is necessary for an fcc test. 
       let validCol = solver.checkColPlacement(puzzle, row, column, value)
       let validRow = solver.checkRowPlacement(puzzle, row, column, value)
       let validReg = solver.checkRegionPlacement(puzzle, row, column, value)

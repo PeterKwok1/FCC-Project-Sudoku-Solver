@@ -108,11 +108,11 @@ class SudokuSolver {
   checkRowPlacement(puzzleString, row, column, value) {
     let grid = parseSudokuString(puzzleString)
     row = this.letterToNumber(row)
-    if (grid[row - 1][column - 1] !== 0) {
-      return false
-    }
+    // if (grid[row - 1][column - 1] !== 0) {
+    //   return false
+    // } // this causes inability to check occupied spaces 
     for (let i = 0; i < 9; i++) {
-      if (grid[row - 1][i] == value) {
+      if (grid[row - 1][i] == value) { // == allows comparisons with different types 
         return false
       }
     }
@@ -122,11 +122,11 @@ class SudokuSolver {
   checkColPlacement(puzzleString, row, column, value) {
     let grid = parseSudokuString(puzzleString)
     row = this.letterToNumber(row)
-    if (grid[row - 1][column - 1] !== 0) {
-      return false
-    }
+    // if (grid[row - 1][column - 1] !== 0) {
+    //   return false
+    // } // this causes inability to check occupied spaces 
     for (let i = 0; i < 9; i++) {
-      if (grid[column - 1][i] == value) {
+      if (grid[i][column - 1] == value) {
         return false
       }
     }
