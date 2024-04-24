@@ -11,7 +11,7 @@ let invalidPuzzleLength = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9
 
 suite('Unit Tests', () => {
     test('Logic handles a valid puzzle string of 81 characters', () => {
-        assert.equal(solver.solve(validPuzzle), completePuzzle)
+        assert.equal(solver.validate(validPuzzle), 'Valid')
     })
 
     test('Logic handles a puzzle string with invalid characters (not 1-9 or .)', () => {
@@ -35,26 +35,26 @@ suite('Unit Tests', () => {
     })
 
     test('Logic handles an invalid column placement', () => {
-        assert.isFalse(solver.checkColPlacement(validPuzzle, 'A', 2, 1))
+        assert.isFalse(solver.checkColPlacement(validPuzzle, 'A', 2, 2))
     })
 
     test('Logic handles a valid region (3x3 grid) placement', () => {
-
+        assert.isTrue(solver.checkRegionPlacement(validPuzzle, 'A', 2, 3))
     })
 
     test('Logic handles an invalid region (3x3 grid) placement', () => {
-
+        assert.isFalse(solver.checkRegionPlacement(validPuzzle, 'A', 2, 1))
     })
 
     test('Valid puzzle strings pass the solver', () => {
-
+        assert.equal(solver.solve(validPuzzle), completePuzzle)
     })
 
     test('Invalid puzzle strings fail the solver', () => {
-
+        assert.isFalse(solver.solve(invalidPuzzleChar))
     })
 
     test('Solver returns the expected solution for an incomplete puzzle', () => {
-
+        assert.equal(solver.solve(validPuzzle), completePuzzle)
     })
 });
